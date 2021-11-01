@@ -3,6 +3,7 @@ package domain_test
 import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	"pekora.dev/yume/ener/internal/money"
 
 	"pekora.dev/yume/ener/internal/plan/domain"
 )
@@ -17,11 +18,13 @@ var _ = Describe("Plan이", func() {
 			It("기본적인 비어있는 Plan이 만들어진다.", func() {
 				Expect(emptyPlan).NotTo(Equal(nil))
 			})
-			It("자금을 넣을 수 없다", func() {
-				err := emptyPlan.PutFund(10)
-				Expect(err).ShouldNot(BeNil())
+			It("자금을 넣을 수 있다.", func() {
+				emptyPlan.PutFund(money.New(10))
 			})
 		})
+	})
+
+	Describe("", func() {
 
 	})
 })

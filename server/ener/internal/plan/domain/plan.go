@@ -1,10 +1,41 @@
 package domain
 
-import "errors"
+import (
+	"pekora.dev/yume/ener/internal/money"
+)
 
-type Plan struct {}
+type Plan struct {
+	defaultFundSource FundSource
+}
 
-func (p Plan) PutFund(amount uint32) error {
-	// TODO: 추후에 구현될 내용.
-	return errors.New("Plan이 아직 설정되지 않아서 자금을 계산할 수 없습니다.")
+func (p Plan) PutFund(amount money.Money) {
+	p.defaultFundSource.Put(amount)
+}
+
+type FundSource struct {
+	id      string
+	account DepositAccount
+}
+
+func NewFundSource() FundSource {
+	return FundSource{
+		id: "uuid",
+		account: NewDepositAccount(),
+	}
+}
+
+func (f FundSource) GetBalance() money.Money {
+	return f.account.GetBalance()
+}
+
+func (f FundSource) Remit(m money.Money) {
+	f.account.Remit(m)
+}
+
+func (f FundSource) AcceptRemittance(m money.Money) {
+	f.account.AcceptRemittance(m)
+}
+
+func (f FundSource) Put(m money.Money) {
+	f.AcceptRemittance(m)
 }
